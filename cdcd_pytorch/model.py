@@ -1,4 +1,4 @@
-from typing import Callable, Optional, Tuple
+from typing import Optional, Tuple
 from torchtyping import TensorType
 
 import torch

@@ -37,3 +37,10 @@ loss = model(x, embedding=embedding)
 noise = torch.randn(1, 1024, 256)
 token_pred = model.sample(noise, num_steps=50, embedding=embedding, embedding_scale=2.5)
 ```
+
+
+# TODO
+
+- [ ] Add self conditioning
+- [ ] Add input masking
+- [ ] Experiment with a two stage training, first stage to train the embeddings with cross entropy and a second stage with frozen embeddings and a score matching loss
