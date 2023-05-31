@@ -6,16 +6,17 @@ import torch.nn.functional as F
 from torch import nn
 from tqdm import tqdm
 
-from .modules import RotaryEmbedder, TimestepEmbedder, FixedEmbedding
+from .modules import RotaryEmbedder, TimestepEmbedder, FixedEmbedding, Transformer
 from .utils import rand_bool
 
 
 class CDCD(nn.Module):
     def __init__(
         self,
-        net_t: Callable,
         scheduler: nn.Module,
         hidden_size: int,
+        num_heads: int,
+        depth: int,
         score_hidden_size: int,
         embedding_max_length: int,
         embedding_features: int,
@@ -28,12 +29,11 @@ class CDCD(nn.Module):
         assert self.scheduler.config.prediction_type == "epsilon", msg
         
         # transformer / conformer backbone
-        self.net = net_t(
+        self.net = Transformer(
             hidden_size=hidden_size,
-            use_time_conditioning=False,
-            use_embedding_cfg=False,
-            cat_embeddings=True,
             embedding_features=embedding_features,
+            num_heads=num_heads,
+            depth=depth,
             **kwargs,
         )
         
